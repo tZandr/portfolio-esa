@@ -1,0 +1,46 @@
+.disc {
+  position: relative; width: 124px; height: 124px; margin: 0 auto;
+  border: 0; padding: 0; background: none; cursor: pointer; display: block;
+}
+.vinyl {
+  position: absolute; inset: 0; border-radius: 50%;
+  background-color: #e9ebec;
+  background-size: cover; background-position: center;
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.grooves {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0 2.2px, rgba(5, 5, 5, 0.12) 2.2px 3.1px
+  );
+}
+.disc:hover .vinyl { transform: translateY(-6px); box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.9); }
+.disc:hover .hub { transform: translate(-50%, calc(-50% - 6px)); }
+
+.hub {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 46%; height: 46%; border-radius: 50%; background: var(--deckface);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.3s var(--ease), opacity 0.2s ease;
+}
+.hubGlyph {
+  width: 0; height: 0; margin-left: 2px;
+  border-left: 8px solid var(--on-dark);
+  border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+}
+
+/* the socket left behind while a disc is in the deck */
+.loaded .vinyl {
+  background-color: transparent; background-image: none !important;
+  box-shadow: none; transform: none;
+  border: 1px dashed rgba(244, 245, 246, 0.32);
+}
+.loaded .grooves { opacity: 0; }
+.loaded .hub { opacity: 0; }
+.loaded { cursor: default; }
+
+@media (min-width: 641px) {
+  .disc { width: 144px; height: 144px; }
+}

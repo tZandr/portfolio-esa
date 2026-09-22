@@ -1,0 +1,18 @@
+.now {
+  text-align: left;
+  opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+}
+[data-playing="true"] .now {
+  opacity: 1; pointer-events: auto;
+  transition: opacity var(--mid) ease 0.28s;
+}
+
+.nowTitle {
+  font-weight: 700; font-size: clamp(28px, 4.4vw, 54px);
+  line-height: 1; letter-spacing: -0.03em; margin: 0; text-wrap: balance;
+}
+.nowMeta {
+  margin: 14px 0 0; font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-dark-2);
+}
+.nowNote { margin: 12px 0 0; max-width: 52ch; font-size: 15.5px; color: var(--on-dark-2); line-height: 1.45; }

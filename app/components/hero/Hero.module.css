@@ -1,0 +1,50 @@
+/* The hero is a committed dark world: white type on footage, regardless of
+   the visitor's light/dark preference. That is a design decision, not an
+   omission — every colour below is stated explicitly.
+
+   The custom properties here are inherited by every hero sub-component. */
+
+.hero {
+  --on-dark: #f4f5f6;
+  --on-dark-2: rgba(244, 245, 246, 0.62);
+  --on-dark-3: rgba(244, 245, 246, 0.34);
+  --deckface: #050505;
+  --ease: cubic-bezier(0.22, 0.61, 0.24, 1);
+  --mid: 0.62s;
+  --text-shadow: 0 2px 14px rgba(5, 5, 5, 0.55), 0 1px 3px rgba(5, 5, 5, 0.6);
+
+  position: relative;
+  height: 100vh;   /* fallback */
+  height: 100svh;  /* iOS chrome won't crop the deck off the bottom */
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--deckface);
+  color: var(--on-dark);
+}
+
+/* The idle branding sits dead-centre on the hero's full height — an
+   overlay of its own, rather than a child of .mid, so nav and the rack
+   below don't pull its centre point up off true middle. No pointer-events:
+   it's text only, and it must never steal clicks from what's under it. */
+.idLayer {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  display: grid; place-items: center;
+  padding: 0 clamp(20px, 5vw, 54px);
+}
+
+/* The now-playing readout sits bottom-left, right above the rack. */
+.mid {
+  position: relative; z-index: 5; flex: 1; min-height: 0;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 0 clamp(20px, 5vw, 54px) 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero, .hero :global(*) { transition-duration: 0.01ms !important; }
+}
+
+@media (min-width: 641px) {
+  .hero { min-height: 600px; }
+}

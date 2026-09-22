@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ESA
 
-## Getting Started
+Portfolio homepage for a game audio designer. Full-height hero: the showreel
+loops behind everything, the rack of discs sits along the bottom, and the
+slot is cut into the last strip of the viewport. Pick a disc and it drops
+into the deck while the footage above changes to that project.
 
-First, run the development server:
+Screen on top, slot underneath — a car head unit. That's why it needs no
+explaining.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3000
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The only file you need
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**`app/content/projects.ts`**. Titles, descriptions, poster images, video
+files, the nav links, the statement — all of it. Adding a project is copying
+one block. Nothing else needs touching to change what the site says.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Put media in `public/posters/` and `public/video/` (see `public/README.md`
+for encoding — compression is on us now, there's no streaming service
+adapting anything).
 
-## Learn More
+A project with `video: ""` shows its poster full screen and plays nothing.
+That's the launch state: it works with stills alone, and video drops in
+later one line at a time.
 
-To learn more about Next.js, take a look at the following resources:
+## Layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+  content/projects.ts      ← edit this
+  components/Hero.tsx      ← the disc mechanics. Rarely needs touching.
+  components/Hero.module.css
+  layout.tsx               fonts + page title
+  page.tsx                 renders Hero with the project list
+public/
+  posters/  video/
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Decisions worth knowing before changing them
 
-## Deploy on Vercel
+**The first impression is silent.** Browsers block autoplay with sound, so
+the loop greeting visitors to a *sound designer's* site makes no noise. The
+loop has no audio track at all — pointless weight. Clicking a disc is a user
+gesture, so those play with sound.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Project video is `object-fit: contain`, not `cover`.** The point of an
+implementation clip is the Wwise window and the profiler in the corners of
+the frame. Cropping to fill the viewport removes the evidence.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**The drop is pure vertical translation.** No scale, no rotation, no fade.
+Depth is layer order: the deck's apron covers whatever passes the seam.
+Rotating it read as the disc warping, which is worse than no effect.
+
+**Eject finishes before the hero closes.** Closing first moves the rack
+mid-flight and the disc misses the socket it came from.
+
+**Height is `100svh`.** On iOS, `100vh` measures against browser chrome that
+then slides away, cropping the bottom of the hero — exactly where the slot
+lives.
+
+**Fonts are self-hosted** via `next/font`, fetched at build time. Nothing
+goes to Google at runtime, which keeps visitor IPs out of Google's hands —
+the GDPR question a plain Google Fonts `<link>` raises for an EU site. The
+build does need network access to fetch them once; in a restricted CI, swap
+to `next/font/local` with the .woff2 files committed.
+
+## Handing it over
+
+The point of this structure is that "add this video to the homepage" is one
+block in one file. Prompts that work cleanly:
+
+- *"Add a new project called X, with the video video/x.mp4 and poster posters/x.jpg"*
+- *"Change the description under ESA to ..."*
+- *"Move Creature foley to be the second disc"*
+- *"Update my email in the top bar to ..."*
+
+Each is a change to `app/content/projects.ts` and nothing else.

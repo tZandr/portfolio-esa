@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large media (hosted externally, not tracked in git)
+public/video/showreel.mp4

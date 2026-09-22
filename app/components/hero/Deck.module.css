@@ -1,0 +1,26 @@
+.deck { position: relative; z-index: 3; flex: none; height: 30px; }
+.apron {
+  position: absolute; left: 0; right: 0; top: 14px; bottom: -400px;
+  background: var(--deckface); z-index: 1; pointer-events: none;
+}
+.seam {
+  position: absolute; left: 0; right: 0; top: 14px; height: 1px;
+  background: rgba(244, 245, 246, 0.18); z-index: 2;
+}
+.mouth {
+  position: absolute; left: 50%; top: 11px; transform: translateX(-50%);
+  width: 150px; height: 5px; background: #000; z-index: 3;
+  box-shadow: 0 0 0 1px rgba(244, 245, 246, 0.16);
+  transition: height 0.34s var(--ease), width 0.34s var(--ease), top 0.34s var(--ease);
+}
+[data-playing="true"] .mouth { height: 9px; top: 9px; width: 168px; }
+.tick { position: absolute; top: 9px; width: 1px; height: 11px; background: rgba(244, 245, 246, 0.2); z-index: 3; }
+.tickL { left: calc(50% - 90px); }
+.tickR { left: calc(50% + 90px); }
+
+@media (min-width: 641px) {
+  .mouth { width: 180px; }
+  [data-playing="true"] .mouth { width: 206px; }
+  .tickL { left: calc(50% - 106px); }
+  .tickR { left: calc(50% + 106px); }
+}

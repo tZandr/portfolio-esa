@@ -1,0 +1,3 @@
+/* the disc in flight — above the rack, below the deck face, so the slot
+   swallows it. Depth is layer order, never a transform. */
+.flyer { position: fixed; z-index: 2; pointer-events: none; }

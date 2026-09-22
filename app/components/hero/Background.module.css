@@ -1,0 +1,32 @@
+.bg { position: absolute; inset: 0; z-index: 0; }
+
+.project { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; }
+.projectOn { opacity: 1; }
+
+/* Full-bleed on phone: filling the screen matters more there than the
+   letterboxing it costs. */
+.player {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+@media (min-width: 641px) {
+  /* contain, not cover: the point of an implementation clip is the Wwise
+     window and the profiler in the corners. Cropping removes the evidence. */
+  .player { object-fit: contain; }
+}
+
+.scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 5, 5, 0.7) 0%,
+    rgba(5, 5, 5, 0.26) 26%,
+    rgba(5, 5, 5, 0.28) 52%,
+    rgba(5, 5, 5, 0.88) 100%
+  );
+  transition: opacity 0.5s ease;
+}
+[data-playing="true"] .scrim { opacity: 0.45; }

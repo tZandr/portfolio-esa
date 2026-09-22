@@ -1,0 +1,26 @@
+/* top/left + width/height, not the inset shorthand: a replaced element
+   (video/img) positioned with all four inset sides set but no explicit
+   size falls back to its own intrinsic size instead of stretching to fill
+   the box — which is what put it off-centre, pinned to the top-left corner
+   at its native resolution instead of covering the frame. Setting
+   width/height directly forces it to fill exactly the box these four
+   numbers describe, and since only two sides are ever set per axis
+   (top+height, left+width), it's never over-constrained the way inset and
+   width together were — so the 6% overscan stays symmetric and the blur
+   never fades into the hero's black background at the edges.
+   brightness() claws back what the blur pulls in from nearby dark footage. */
+.clip {
+  position: absolute;
+  top: -6%;
+  left: -6%;
+  /* Tailwind's preflight resets img/video to max-width:100%, which caps
+     the 112% below however wide it's asked to be — that's the gap that
+     showed up as a dark tint on the right, where nothing was actually
+     covering the hero background. max-width overrides width regardless of
+     selector specificity, so it has to be cancelled explicitly. */
+  max-width: none;
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  filter: blur(10px) brightness(0.70);
+}

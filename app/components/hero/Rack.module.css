@@ -1,0 +1,52 @@
+.rackWrap { position: relative; z-index: 2; flex: none; }
+.rack {
+  display: flex; align-items: flex-start; gap: clamp(18px, 3vw, 38px);
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  padding: 8px calc(50% - 62px) 16px;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.rack::-webkit-scrollbar { display: none; }
+
+.slot { scroll-snap-align: center; flex: none; width: 124px; text-align: center; }
+
+.cap { margin-top: 13px; display: block; }
+.capTitle { font-weight: 600; font-size: 13.5px; display: block; color: var(--on-dark); }
+.capMeta {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--on-dark-3); display: block; margin-top: 4px;
+}
+
+.arrow {
+  position: absolute; z-index: 4; top: calc(50% - 34px);
+  width: 32px; height: 32px; cursor: pointer;
+  border: 1px solid rgba(244, 245, 246, 0.24); background: rgba(5, 5, 5, 0.3);
+  display: grid; place-items: center; color: var(--on-dark-2);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.arrow:hover { border-color: var(--on-dark); color: var(--on-dark); }
+.arrowL { left: clamp(12px, 3vw, 34px); }
+.arrowR { right: clamp(12px, 3vw, 34px); }
+
+/* z-index above everything in the rack (arrows included) — as a strip
+   spanning the full width, it would otherwise lose the hit-test to the
+   loaded disc's own (disabled) button sitting underneath it. */
+.mark {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 5;
+  transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  border: 0; background: none; cursor: pointer; line-height: 1; padding: 6px 0;
+  pointer-events: none; opacity: 0; transition: opacity 0.5s ease, color 0.15s ease;
+  font-size: 15px; color: rgba(244, 245, 246, 0.42);
+}
+[data-playing="true"] .mark { opacity: 1; pointer-events: auto; transition: opacity var(--mid) ease 0.3s; }
+.mark:hover { color: var(--on-dark); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rack { scroll-behavior: auto; }
+}
+
+@media (min-width: 641px) {
+  .rack { padding-left: calc(50% - 72px); padding-right: calc(50% - 72px); }
+  .slot { width: 144px; }
+}
